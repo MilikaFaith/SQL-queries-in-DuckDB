@@ -29,19 +29,21 @@ Each raw represents a single trip,enabling analysis at trip,hourly,monthly and e
   +  **Revenue:** Location,time.
 ### 2. Importing and Contextualizing the Data.
 + Cloned the resipository to my git for data retrival.
-+ Loaded the data into my DuckDB environment from the official TLC NYC trip record data using the forked python data pipline into readble SQL tables.
-+ Loaded the taxi_zone_lookup_table (link) to facilitate the analysis of boroughs and zones performance.
++ Loaded the data into my DuckDB environment from the official TLC NYC trip record data using the forked python data pipline into readble SQL tables.[Click to view datapipeline code](https://github.com/MilikaFaith/SQL-queries-in-DuckDB/blob/main/pipeline/pipeline.py)
++ Loaded the taxi_zone_lookup_table [zone_lookup_table_code](https://github.com/MilikaFaith/SQL-queries-in-DuckDB/blob/main/Milika/taxi_zone_table_Milika.sql) to facilitate the analysis of boroughs and zones performance.
 + Verified the dataset against the business context, ensuring completeness and relevance in the required form and timeframe to support the intended analysis.
 ### 3. Data Preparation - Cleaned, Validated & Standardized.
+[Click to view code](https://github.com/MilikaFaith/SQL-queries-in-DuckDB/blob/main/Milika/00_validation_checks_Milika.sql)
 + Checked for  missing values in critical feilds: fares, trips,passenger counts,vendorids,ratecodeids,surcharges.
 + Checked for Negative/zero/invalid records: zero or negative fares,trip_distance,surcharges.
 + Checked for invalid timestamps: dropoff_datetime < pickup_datetime
 + Checked for unrealistic durations: dropoff time - pickup time > 8 hour interval.
 + Checked for Duplicates: vendorid,trips is > 1
 + Checked for irrelevant data: Data not within the 10 year decade [ 2015 - 2025]
-+ Created a complete Data Quality Check Table (Link to Code).
++ Created a complete Data Quality Check Table [Data quality check table code](https://github.com/MilikaFaith/SQL-queries-in-DuckDB/blob/main/Milika/01_dataquality_table_Milika.sql).
 ### 4. KPI Design and Analytical SQL Queries
 + **Operational Analytics performance**
+  [Click to view code](https://github.com/MilikaFaith/SQL-queries-in-DuckDB/blob/main/Milika/02_operational_analytics_Milika.sql)
   + Operational trip summary performance for both the green and yellow taxi trip data.
      + Utilized multiple **CTE's to break the steps into 3 modularized steps**.
       1. **Base CTE:** Selects core taxi trip details,calculates trip duration in minutes,enriches each trip with location context through JOINS and filters out any invalid or inconsistent records ensuring data quality.
@@ -53,6 +55,7 @@ Each raw represents a single trip,enabling analysis at trip,hourly,monthly and e
      + Utilized **UNION ALL** to merge the yellow and green taxi datasets into a unified view of pickup activity,using **CASE** statementes to categorize the pickup times into hourly AM/PM buckets,time extraction,type conversion and padding to summarize the trip volumes by year and hour, allowing for demand pattern comparison across taxi services and hourly operational performance trend.
  
 + **Financial Analytics Performance**
+  [Click to view code](https://github.com/MilikaFaith/SQL-queries-in-DuckDB/blob/main/Milika/03_finance_analytics_Milika.sql)
   +  **Financial performance trend over time.**
      + Built a query that summarizes monthly revenue by aggregating key components of total revenue including fares,tips and surcharges.Calculating both absolute values and the percentage contribution of each component to the overall monthly revenue, providing insight into the composition of earnings over time.Invalid or missing monetray values are filtered as well using **COALLESE and WHERE clauses** to ensure data quality, groups trips by year and months,and the results are formated for easy trend analysis and reporting.
   +  **Customer Payment distribution.**
